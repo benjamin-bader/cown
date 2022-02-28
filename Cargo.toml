@@ -1,7 +1,14 @@
 [package]
 name = "cown"
-description = "A simple program for finding out the codeowners of a file"
 version = "0.1.0"
+authors = ["Ben Bader <ben@bendb.com>"]
+license = "GPLv3"
+description = "A simple program for finding out the codeowners of a file"
+readme = "README.md"
+homepage = "https://github.com/benjamin-bader/cown"
+repository = "https://github.com/benjamin-bader/cown"
+keywords = ["cli", "git", "codeowners"]
+categories = ["command-line-utilities"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
