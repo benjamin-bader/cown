@@ -2,7 +2,7 @@
 name = "cown"
 version = "0.1.0"
 authors = ["Ben Bader <ben@bendb.com>"]
-license = "GPLv3"
+license = "GPL-3.0-or-later"
 description = "A simple program for finding out the codeowners of a file"
 readme = "README.md"
 homepage = "https://github.com/benjamin-bader/cown"
