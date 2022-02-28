@@ -18,8 +18,6 @@ use std::fs;
 use std::io::{self, BufRead};
 use std::path;
 
-use glob;
-
 pub struct OwnersFile {
     // The absolute path on disk of this CODEOWNERS file.
     pub path: path::PathBuf,
@@ -31,7 +29,7 @@ pub struct OwnersFile {
 impl OwnersFile {
     pub fn new(path: path::PathBuf) -> Self {
         Self {
-            path: path,
+            path,
             rules: vec![],
         }
     }
@@ -74,24 +72,16 @@ pub struct Rule {
 impl Rule {
     pub fn try_parse(line: &str) -> Option<Self> {
         let line = line.trim();
-        if line.is_empty() || line.starts_with("#") {
-            return None;
-        }
-
-        if line.starts_with("#") {
+        if line.is_empty() || line.starts_with('#') {
             return None;
         }
 
         let segments: Vec<&str> = line.split_whitespace().collect();
 
-        if let Some(pattern) = Self::parse_pattern(segments.first().unwrap()) {
-            Some(Self {
-                pattern: pattern,
-                owners: segments.iter().skip(1).map(|&s| s.to_string()).collect(),
-            })
-        } else {
-            None
-        }
+        Self::parse_pattern(segments.first().unwrap()).map(|pat| Self {
+            pattern: pat,
+            owners: segments.iter().skip(1).map(|&s| s.to_string()).collect(),
+        })
     }
 
     fn parse_pattern(text: &str) -> Option<glob::Pattern> {
