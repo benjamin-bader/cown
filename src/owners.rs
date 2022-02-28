@@ -48,12 +48,25 @@ impl OwnersFile {
     }
 
     pub fn owner_for<P: AsRef<path::Path>>(&self, path: P) -> Option<&Vec<String>> {
-        let path = path.as_ref();
+        let mut path = path.as_ref();
+        if path.starts_with(self.root()) {
+            path = path.strip_prefix(self.root()).unwrap();
+        }
+
         self.rules
             .iter()
             .filter(|r| r.matches_file(path))
             .map(|r| &r.owners)
             .next()
+    }
+
+    fn root(&self) -> &path::Path {
+        let dir = self.path.parent().unwrap();
+        if dir.ends_with(".github") || dir.ends_with("docs") {
+            dir.parent().unwrap()
+        } else {
+            dir
+        }
     }
 }
 

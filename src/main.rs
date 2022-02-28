@@ -118,7 +118,10 @@ fn find_repo_root_for<P: AsRef<path::Path>>(file: P) -> io::Result<path::PathBuf
     } else if md.is_file() {
         file.parent().expect("files should have parent directories")
     } else {
-        return Err(io::Error::new(io::ErrorKind::NotFound, format!("{:?}", file)))
+        return Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            format!("{:?}", file),
+        ));
     };
 
     let output = process::Command::new("git")
