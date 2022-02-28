@@ -42,6 +42,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "cown"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "glob",
+]
+
+[[package]]
 name = "glob"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -97,14 +105,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e22443d1643a904602595ba1cd8f7d896afe56d26712531c5ff73a15b2fbf64"
 dependencies = [
  "memchr",
-]
-
-[[package]]
-name = "owns"
-version = "0.1.0"
-dependencies = [
- "clap",
- "glob",
 ]
 
 [[package]]

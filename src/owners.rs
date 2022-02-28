@@ -1,4 +1,4 @@
-// owns - a small CODEOWNERS tool
+// cown - a small CODEOWNERS tool
 // Copyright (C) 2022 Ben Bader
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,38 +27,31 @@ pub struct OwnersFile {
 }
 
 impl OwnersFile {
-    pub fn new(path: path::PathBuf) -> Self {
-        Self {
-            path,
-            rules: vec![],
-        }
+    pub fn new(path: path::PathBuf, rules: Vec<Rule>) -> Self {
+        Self { path, rules }
     }
 
     pub fn try_parse(file: path::PathBuf) -> io::Result<Option<OwnersFile>> {
         let handle = fs::File::open(&file)?;
         let buf = io::BufReader::new(handle);
 
-        let mut owners_file = Self::new(file);
+        let mut rules = Vec::new();
         for line in buf.lines() {
             let line = line?;
             if let Some(rule) = Rule::try_parse(&line) {
-                owners_file.add_rule(rule);
+                rules.push(rule);
             }
         }
+        rules.reverse();
 
-        owners_file.rules.reverse();
-
-        Ok(Some(owners_file))
-    }
-
-    pub fn add_rule(&mut self, rule: Rule) {
-        self.rules.push(rule);
+        Ok(Some(Self::new(file, rules)))
     }
 
     pub fn owner_for<P: AsRef<path::Path>>(&self, path: P) -> Option<&Vec<String>> {
+        let path = path.as_ref();
         self.rules
             .iter()
-            .filter(|r| r.matches_file(path.as_ref()))
+            .filter(|r| r.matches_file(path))
             .map(|r| &r.owners)
             .next()
     }

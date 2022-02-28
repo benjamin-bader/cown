@@ -1,4 +1,4 @@
-owns
+cown
 ----
 
 A simple CODEOWNERS tool for quickly finding out "who owns this file?"
@@ -7,7 +7,7 @@ usage
 -----
 
 ```
-$ owns path/to/file.rs
+$ cown path/to/file.rs
 > @nobody
 ```
 

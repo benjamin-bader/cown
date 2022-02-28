@@ -1,4 +1,4 @@
-// owns - a small CODEOWNERS tool
+// cown - a small CODEOWNERS tool
 // Copyright (C) 2022 Ben Bader
 //
 // This program is free software: you can redistribute it and/or modify

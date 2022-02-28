@@ -1,5 +1,5 @@
 [package]
-name = "owns"
+name = "cown"
 description = "A simple program for finding out the codeowners of a file"
 version = "0.1.0"
 edition = "2021"
