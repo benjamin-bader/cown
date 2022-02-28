@@ -31,7 +31,7 @@ impl OwnersFile {
         Self { path, rules }
     }
 
-    pub fn try_parse(file: path::PathBuf) -> io::Result<Option<OwnersFile>> {
+    pub fn try_parse(file: path::PathBuf) -> io::Result<OwnersFile> {
         let handle = fs::File::open(&file)?;
         let buf = io::BufReader::new(handle);
 
@@ -44,7 +44,7 @@ impl OwnersFile {
         }
         rules.reverse();
 
-        Ok(Some(Self::new(file, rules)))
+        Ok(Self::new(file, rules))
     }
 
     pub fn owner_for<P: AsRef<path::Path>>(&self, path: P) -> Option<&Vec<String>> {
