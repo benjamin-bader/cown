@@ -36,9 +36,9 @@ impl OwnersFile {
         let buf = io::BufReader::new(handle);
 
         let mut rules = Vec::new();
-        for line in buf.lines() {
+        for (line_number, line) in buf.lines().enumerate() {
             let line = line?;
-            if let Some(rule) = Rule::try_parse(&line) {
+            if let Some(rule) = Rule::try_parse(&line, line_number + 1) {
                 rules.push(rule);
             }
         }
@@ -48,9 +48,11 @@ impl OwnersFile {
     }
 
     pub fn owner_for<P: AsRef<path::Path>>(&self, path: P) -> Option<&Vec<String>> {
+        let root = self.root();
+
         let mut path = path.as_ref();
-        if path.starts_with(self.root()) {
-            path = path.strip_prefix(self.root()).unwrap();
+        if path.starts_with(root) {
+            path = path.strip_prefix(root).unwrap();
         }
 
         self.rules
@@ -73,10 +75,11 @@ impl OwnersFile {
 pub struct Rule {
     pub pattern: glob::Pattern,
     pub owners: Vec<String>,
+    pub line_number: usize,
 }
 
 impl Rule {
-    pub fn try_parse(line: &str) -> Option<Self> {
+    pub fn try_parse(line: &str, line_number: usize) -> Option<Self> {
         let line = line.trim();
         if line.is_empty() || line.starts_with('#') {
             return None;
@@ -87,6 +90,7 @@ impl Rule {
         Self::parse_pattern(segments.first().unwrap()).map(|pat| Self {
             pattern: pat,
             owners: segments.iter().skip(1).map(|&s| s.to_string()).collect(),
+            line_number,
         })
     }
 

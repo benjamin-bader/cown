@@ -32,14 +32,16 @@ fn main() {
         .value_of("FILE")
         .expect("required FILE argument was missing");
     let file = path::PathBuf::from(file_name);
-    let file = file.canonicalize().unwrap_or_else(|err| {
-        if err.kind() == io::ErrorKind::NotFound {
-            eprintln!("File not found");
-        } else {
-            eprintln!("Failed to canonicalize input file '{:?}': {}", file, err);
-        }
-        process::exit(1);
-    });
+    let file = path::PathBuf::from(file_name)
+        .canonicalize()
+        .unwrap_or_else(|err| {
+            if err.kind() == io::ErrorKind::NotFound {
+                eprintln!("File not found");
+            } else {
+                eprintln!("Failed to canonicalize input file '{:?}': {}", file, err);
+            }
+            process::exit(1);
+        });
 
     let maybe_owners_file_path = find_codeowner_file_for(&file).unwrap_or_else(|err| {
         eprintln!("Error locating CODEOWNERS file: {}", err);
